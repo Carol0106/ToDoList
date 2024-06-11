@@ -139,20 +139,5 @@ const Cards = () => {
  );
 };
 
-//         <form onSubmit={handleUpdate} className="edit-form">
-//           <input
-//             type="text"
-//             placeholder="Title"
-//             value={newTitle}
-//             onChange={(e) => setNewTitle(e.target.value)}
-//             required
-//           />
-//           <button type="submit">Update Task</button>
-//           <button type="button" onClick={() => setEditTask(null)}>Cancel</button>
-//         </form>
-//       )}
-//     </section>
-//   );
-// };
 
 export default Cards;
