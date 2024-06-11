@@ -1,0 +1,36 @@
+.header {
+    display: flex;
+    background-color: transparent;
+    padding: 20px 100px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .cta-button {
+    background-color: #000;
+    color: white;
+    border: none;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    width: 120px;
+    height: 40px;
+    top: 54px;
+    left: 1240px;
+    gap: 0px;
+    opacity: 0px;
+    font-size: 14px;
+    line-height: 21px;
+
+  }
+  
+  
+  
+  @media (max-width: 768px) {
+    .header {
+      padding: 20px!important;
+    }
+    .header img {
+      max-width: 170px;
+    }
+  }

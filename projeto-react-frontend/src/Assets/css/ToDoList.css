@@ -1,0 +1,74 @@
+  
+  .ToDoList-section {
+    position: relative;
+    /* background-color: #000; */
+    color: white;
+    padding: 50px 20px;
+    overflow: hidden;
+    min-height: 560px;
+    margin-top: -80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+  }
+  
+  .ToDoList-section::before {
+    content: '';
+    position: absolute;
+    top: 156px;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background-color: #000;
+    transform: skewY(-4deg);
+    transform-origin: top left;
+    z-index: -1;
+  }
+
+  .ToDoList-section h2{
+    font-family: "Poppins", sans-serif;
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 60px;
+    text-align: left;
+  }
+
+  .underline-colorido {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+  }
+  .underline-colorido::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 4px;
+    background-color: #4AC959; 
+    transition: height 0.3s ease;
+  }
+  .underline-colorido:hover::after {
+    height: 4px; 
+  }
+  .underline-colorido-spaced {
+    letter-spacing: 2px; 
+  }
+
+  .ToDoList-section p{
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29.26px;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+@media (max-width: 960px) {
+    .ToDoList-section {
+      margin-top: -130px;
+      padding-top: 170px;
+    }
+}
