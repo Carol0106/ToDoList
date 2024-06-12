@@ -30,9 +30,9 @@ const ModalLogin = ({ lgShow, handleClose }) => {
   };
 
   return (
-    <Modal size="lg" show={lgShow} onHide={handleClose} animation={true}>
+    <Modal size="lg" show={lgShow} onHide={() => { handleClose(); window.location.reload(); }} animation={true}>
       <Modal.Header>
-        <a className='closemodal' onClick={handleClose}>close</a>
+        <a className='closemodal' onClick={() => { handleClose(); window.location.reload(); }}>close</a>
       </Modal.Header>
       <Modal.Body>
         {showSignIn ? (
