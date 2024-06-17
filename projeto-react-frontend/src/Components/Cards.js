@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import '../Assets/css/Cards.css';
-import api from '../Api';
-import ModalEdit from './ModalEdit'; 
+import api from '../Utils/api';
+import ModalTask from './ModalTask';
+import { isAuthenticated } from '../Utils/auth'; 
 
 const Cards = () => {
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [showModalTask, setShowModalTask] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
-  const [newTitle, setNewTitle] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
+  const [disableDeleteAll, setDisableDeleteAll] = useState(true); 
 
   useEffect(() => {
     fetchTasks();
+    setIsLoggedIn(isAuthenticated()); 
   }, []);
+
+  useEffect(() => {
+    setDisableDeleteAll(tasks.length === 0 || !isLoggedIn);
+  }, [tasks]);
 
   const fetchTasks = async () => {
     try {
@@ -35,12 +42,21 @@ const Cards = () => {
     }
   };
 
-  const handleDeleteAll = async () => {
+  const handleDeleteAllTodo = async () => {
     try {
       await Promise.all(tasks.map(task => api.delete(`/tasks/${task._id}`)));
       fetchTasks();
     } catch (error) {
-      console.error('Error deleting all tasks:', error);
+      console.error('Error deleting all todo tasks:', error);
+    }
+  };
+
+  const handleDeleteAllDone = async () => {
+    try {
+      await Promise.all(doneTasks.map(task => api.delete(`/tasks/${task._id}`)));
+      fetchTasks();
+    } catch (error) {
+      console.error('Error deleting all done tasks:', error);
     }
   };
 
@@ -57,21 +73,23 @@ const Cards = () => {
 
   const handleEdit = (task) => {
     setEditTask(task);
-    setNewTitle(task.title);
-    setShowEditModal(true); 
+    setShowModalTask(true);
   };
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
+  const handleUpdateTask = async (taskId, newTitle) => {
     try {
-      await api.put(`/tasks/${editTask._id}`, { title: newTitle });
-      setEditTask(null);
-      setNewTitle('');
+      await api.put(`/tasks/${taskId}`, { title: newTitle });
+      console.log('Task updated');
       fetchTasks();
-      setShowEditModal(false);
+      setShowModalTask(false);
     } catch (error) {
       console.error('Error updating task:', error);
     }
+  };
+
+  const handleCloseModalTask = () => {
+    setEditTask(null);
+    setShowModalTask(false);
   };
 
   return (
@@ -91,18 +109,21 @@ const Cards = () => {
                   /> 
                   <span>{task.title}</span>
                 </label>
-                <span className="delete" onClick={() => handleEdit(task)}>edit</span>
-                <span className="delete" onClick={() => handleDelete(task._id)}>delete</span>
+                {isLoggedIn && (
+                  <React.Fragment>
+                    <span className="delete" onClick={() => handleEdit(task)} disabled={!isLoggedIn}>edit</span>
+                    <span className="delete" onClick={() => handleDelete(task._id)} disabled={!isLoggedIn}>delete</span>
+                  </React.Fragment>
+                )}
               </li>
             ))}
-           
             <li>
               <label>
                 <input type="checkbox" /> <span style={{color: '#E38D3F'}}>Editing an item...</span>
               </label>
             </li>
           </ul>
-          <button className="erase-button" onClick={handleDeleteAll}>erase all</button>
+          <button className="erase-button" onClick={handleDeleteAllTodo} disabled={disableDeleteAll}>erase all</button>
         </div>
         <div className="Cards done">
           <h3>Done</h3>
@@ -119,25 +140,28 @@ const Cards = () => {
                   /> 
                   <span>{task.title}</span>
                 </label>
-                <span className="delete" onClick={() => handleDelete(task._id)}>delete</span>
+                
+                {isLoggedIn && (
+                  <React.Fragment>
+                    <span className="delete" onClick={() => handleDelete(task._id)} disabled={!isLoggedIn}>delete</span>
+                  </React.Fragment>
+                )}
               </li>
             ))}
           </ul>
-          <button className="erase-button" onClick={handleDeleteAll}>erase all</button>
+          <button className="erase-button" onClick={handleDeleteAllDone} disabled={disableDeleteAll}>erase all</button>
         </div>
       </div>
-      {editTask && (
-         <ModalEdit 
-         show={showEditModal}
-         onHide={() => setShowEditModal(false)} 
-         onUpdate={handleUpdate} 
-         newTitle={newTitle} 
-         setNewTitle={setNewTitle}
-       />
-     )}
-   </section>
- );
+      {showModalTask && (
+        <ModalTask
+          show={showModalTask}
+          handleClose={handleCloseModalTask}
+          task={editTask}
+          onUpdate={handleUpdateTask}
+        />
+      )}
+    </section>
+  );
 };
-
 
 export default Cards;

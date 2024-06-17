@@ -26,6 +26,10 @@ app.use('/api/tasks', tasksRouter);
 const contactRoutes = require('./Routes/contactRoutes');
 app.use('/api/contact', contactRoutes);
 
+const userRoutes = require('./Routes/userRoutes');
+app.use('/api/user', userRoutes);
+
+
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });

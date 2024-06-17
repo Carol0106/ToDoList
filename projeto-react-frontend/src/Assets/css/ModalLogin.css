@@ -111,3 +111,10 @@
     border-radius: 0!important;
     border: solid 2px #4AC959!important;
 }
+
+.link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: green;
+}

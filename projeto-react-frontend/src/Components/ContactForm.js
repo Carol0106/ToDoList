@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../Assets/css/ContactForm.css';
 import imagem from '../Assets/img/imagem.png';
 import icone from '../Assets/img/icon-mail.png';
-import api from '../Api';
+import api from '../Utils/api';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
